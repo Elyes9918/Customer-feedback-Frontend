@@ -1,25 +1,35 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { CssBaseline, StylesProvider, ThemeProvider } from '@material-ui/core';
+import { BrowserRouter as Router, Route ,Routes,Navigate} from 'react-router-dom';
+import { theme } from './services/theme';
+import HomePage from './pages/HomePage/HomePage';
+import NotFound from './pages/NotFound/NotFound';
+import { Toolbar } from './components/Toolbar/Toolbar';
+import MainPage from './pages/MainPage/MainPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <div className="LightTheme">
+      <ThemeProvider theme={theme} >
+      <StylesProvider injectFirst>
+        <CssBaseline />
+        <Router>
+          <Toolbar />
+          <Routes>
+            <Route path='/main' element={<MainPage/>}/>
+            <Route path='/*' element={<NotFound/>} />
+            <Route path="/" element={<Navigate to="/login" replace/>} /> 
+            <Route path="/login" element={<HomePage/>}/> 
+            <Route path="/register" element={<HomePage/>}/> 
+          </Routes>
+        </Router>
+      </StylesProvider>
+    </ThemeProvider>
+   </div>
+
   );
 }
 

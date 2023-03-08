@@ -1,0 +1,26 @@
+.AppBar {
+    box-shadow: 1px 1px rgba(0, 0, 0, 0.088);;
+    background-color:  rgb(252, 252, 252);
+    color :black;
+    flex-grow: 1;
+    white-space: nowrap;
+  
+  }
+  
+  .HeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .HeaderLeftContainer {
+    display: flex;
+    cursor: pointer;
+  }
+  
+  .HeaderIcon {
+    color: #000;
+    margin-top: 4px;
+    margin-right: 5px;
+  }
+  

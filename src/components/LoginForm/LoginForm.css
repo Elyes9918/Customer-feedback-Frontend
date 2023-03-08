@@ -1,0 +1,39 @@
+.CreateGameTextField {
+  padding-bottom: 15px;
+}
+
+.CreateGameButton {
+  color: var(--color-background);
+  width: 70%;
+  border-radius: 40px;
+  
+}
+
+.CreateGameCard {
+  background: transparent;
+  border: none !important;
+  padding: 50px;
+}
+
+.CreateGameCardHeader {
+  text-align: center;
+}
+
+.CreateGameCardContent {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.CreateGameCardAction {
+  justify-content: center;
+}
+
+.ForogtPassword{
+
+}
+
+.ForogtPassword:hover{
+    color:var(--color-primary);
+    -webkit-transition: opacity 0.5s ease-in-out;
+}
