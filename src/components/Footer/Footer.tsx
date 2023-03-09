@@ -8,7 +8,7 @@ import './Footer.css';
 export const Footer = () => {
   return (
     <footer >
-      <Slide in={true} direction='up' timeout={3000}>
+      <Slide in={true} direction='up'  timeout={2000}>
         <div className='FooterSection'>
           <Divider variant='middle'></Divider>
           <div className='FooterContainer'>

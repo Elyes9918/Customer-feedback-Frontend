@@ -16,11 +16,13 @@ export interface IUser {
     projectsId?: number[];
     feedbacksId?: number[];
     roles?: string[];
+    token?:string;
   }
 
 export interface IUserForm{
   email?:string;
   password?:string;
+  token?:string;
 }
 
 interface IUserState{

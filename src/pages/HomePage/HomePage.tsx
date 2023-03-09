@@ -6,10 +6,17 @@ import SessionControllerImage from './../../images/Session.jpg';
 import { LoginForm } from '../../components/LoginForm/LoginForm';
 import { SingupShortcut } from '../../components/SingupShortcut/SingupShortcut';
 import { RegisterForm } from '../../components/RegisterForm/RegisterForm';
+import { DoublePasswordForm } from '../../components/ResetPassword/DoublePasswordForm/DoublePasswordForm';
+import { EmailForm } from '../../components/ResetPassword/EmailForm/EmailForm';
 
 
 const HomePage = () => {
     const isLogin = useMatch('/login');
+    const isResetPassword = useMatch('/resetPassword');
+    const isChangePassword = useMatch('/resetPassword/changePassword/:resetToken');
+    const isRegister = useMatch('/register');
+
+
     const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down('xs'));
 
     return ( 
@@ -29,7 +36,7 @@ const HomePage = () => {
                   ></img>
                   <Typography variant='subtitle1' align="center">
                     Welcome to our customer feedback application! We're thrilled to have you on board and can't 
-                    wait to help you gather valuable insights from your customers
+                    wait to help you gather valuable insights from our services
                    
                   </Typography>
                 </div>
@@ -38,8 +45,12 @@ const HomePage = () => {
   
             <Grid item sm={12} lg={6}>
               {/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
-               <div className='HomePageContainer'>{isLogin ? <LoginForm /> : <RegisterForm />}</div> 
-               {/* <div className='HomePageContainer'><LoginForm /></div> */}    
+              {isResetPassword &&  <div className='HomePageContainer'><EmailForm /></div> }
+               {isChangePassword &&  <div className='HomePageContainer'><DoublePasswordForm /></div> }
+               {isLogin &&  <div className='HomePageContainer'><LoginForm /></div> }
+               {isRegister &&  <div className='HomePageContainer'><RegisterForm /></div> }
+               
+
             </Grid>
             </Grid>
 
@@ -118,7 +129,8 @@ const HomePage = () => {
           
         </Grid>
         
-        <Footer />
+        <Footer/>
+        
       </>
      );
 }

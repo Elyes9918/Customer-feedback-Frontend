@@ -17,9 +17,13 @@ import {
 import { IUserForm } from '../../types/User';
 import { Label } from '@material-ui/icons';
 import { useAppDispatch } from '../../app/hooks';
-import { LoginUserAction, getUserListAction } from '../../reduxSlices/UserSlice';
-import { useLoginUserMutation } from '../../services/AuthApi';
-import { setUser } from '../../reduxSlices/authSlice';
+import {  getUserListAction } from '../../features/userSlice';
+import {  LoginUserAction } from '../../features/authSlice';
+import { useAuth } from '../../app/routesProtectionComponents/ProtectedRoutes';
+import { store } from '../../app/store';
+
+
+
 
   
   export const LoginForm = () => {
@@ -27,12 +31,16 @@ import { setUser } from '../../reduxSlices/authSlice';
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginUser,{data,isSuccess,isError,error}] = useLoginUserMutation();
     const dispatch = useAppDispatch();
+
 
       useEffect(()=>{
        },[])
 
+
+      const handleClickRememberPassword = () =>{
+      navigate(`/resetPassword`);
+      }
    
   
     const handleSubmit = async (event: FormEvent) => {
@@ -42,19 +50,11 @@ import { setUser } from '../../reduxSlices/authSlice';
         password: password,
       };
 
-  
-      await loginUser({email,password});
-
-        // dispatch(setUser({token:data.token}));
-      
-      navigate(`/main`);
-    
-      // console.log(email);
-      // console.log(password);
-      //dispatch(LoginUserAction(user))
-
-     // const newGameId = await addNewGame(game);
- 
+      dispatch(LoginUserAction(user)).then(()=>{
+        navigate(`/main`);
+        window.location.reload();
+      })
+       
     };
   
     return (
@@ -92,7 +92,7 @@ import { setUser } from '../../reduxSlices/authSlice';
                 onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
               />
 
-            <Typography className='ForogtPassword'>Remember password ?</Typography>
+            <Typography className='ForogtPassword' component="span" onClick={handleClickRememberPassword}>Remember password ?</Typography>
 
               {/* <RadioGroup
                 aria-label='gender'

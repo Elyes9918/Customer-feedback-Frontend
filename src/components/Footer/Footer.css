@@ -1,5 +1,7 @@
+
 .FooterSection {
-    margin-top: 30px;
+    margin-top: 150px;
+    max-height: 20vh;
   }
   
   .FooterContainer {
@@ -8,6 +10,7 @@
     justify-content: space-evenly;
     align-items: center;
     text-align: center;
+    height: 80px;
   }
   
   .FooterItemContainer {

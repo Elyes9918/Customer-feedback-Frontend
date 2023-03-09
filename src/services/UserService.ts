@@ -1,29 +1,27 @@
-import HttpService from "./HttpService";
-import ApiConfig from "./ApiConfig";
 import { IUser, IUserForm } from "../types/User";
+import axios from "axios";
 
+export const getToken = () => JSON.parse(localStorage.getItem('userToken') || '{}');
+
+const getAuthorizationHeader = `Bearer ${getToken()}`;
+
+const apiUsersURL = "http://127.0.0.1:8000/api/v1/users"
+const baseURL = "http://127.0.0.1:8000"
+
+
+const authAxios = axios.create({
+    baseURL:apiUsersURL,
+    headers : {
+        Authorization: getAuthorizationHeader,
+    },
+});
 
 export const getUserListApi = async () => {
-    return await HttpService.get<IUser[]>(ApiConfig.user,{ withCredentials: true });
-};
-
-export const RegisterUserApi = async (data: IUserForm) => {
-    const url = `${ApiConfig.api}api/register`;
-    return await HttpService.post<IUser>(url, data,{ withCredentials: true });
-};
-
-export const LoginUserApi = async (data: IUserForm) => {
-    const url = `${ApiConfig.api}api/login_check`;
-    return await HttpService.post<IUser>(url, data,{ withCredentials: true });
+    return await authAxios.get<IUser[]>(apiUsersURL);
 };
 
 export const updateUserApi = async (id: number, data: IUser) => {
-    const url = `${ApiConfig.user}/${id}`;
-    return await HttpService.patch(url, data,{ withCredentials: true });
+    const url = `${apiUsersURL}/${id}`;
+    return await axios.patch(url, data);
 };
 
-
-export const logoutUserApi = async() => {
-    const url = `${ApiConfig.api}logout`;
-    return await HttpService.get(url,{ withCredentials: true })
-}

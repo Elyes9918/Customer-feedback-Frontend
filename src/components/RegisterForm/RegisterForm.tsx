@@ -17,9 +17,7 @@ import {
 import { IUserForm } from '../../types/User';
 import { Label } from '@material-ui/icons';
 import { useAppDispatch } from '../../app/hooks';
-import { LoginUserAction, getUserListAction } from '../../reduxSlices/UserSlice';
-import { useLoginUserMutation } from '../../services/AuthApi';
-import { setUser } from '../../reduxSlices/authSlice';
+import { LoginUserAction, RegisterUserAction } from '../../features/authSlice';
 
 // interface RegisterFormProps {
 //   mainPageEmail: string;
@@ -31,15 +29,12 @@ export const RegisterForm = ( ) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginUser,{data,isSuccess,isError,error}] = useLoginUserMutation();
+    const [cPassword,setCPassword]= useState('');
     const dispatch = useAppDispatch();
-
-    // setEmail(mainPageEmail);
 
     useEffect(()=>{
       },[])
 
-   
   
     const handleSubmit = async (event: FormEvent) => {
       event.preventDefault();
@@ -48,18 +43,16 @@ export const RegisterForm = ( ) => {
         password: password,
       };
 
-  
-      await loginUser({email,password});
-
-        // dispatch(setUser({token:data.token}));
-      
-      navigate(`/main`);
-    
-      // console.log(email);
-      // console.log(password);
-      //dispatch(LoginUserAction(user))
-
-     // const newGameId = await addNewGame(game);
+      if(password === cPassword){
+        
+        dispatch(RegisterUserAction(user)).then(()=>{
+          navigate(`/login`);
+          //if action is succesfull
+        }).catch(()=>{
+          //if action failed
+        })
+        
+      }
  
     };
   
@@ -79,7 +72,7 @@ export const RegisterForm = ( ) => {
               <TextField
                 className='CreateGameTextField'
                 required
-                id='filled-required'
+                id='filled-required 1'
                 label='Email'
                 placeholder='Enter your email'
                 defaultValue={email}
@@ -89,7 +82,7 @@ export const RegisterForm = ( ) => {
               <TextField
                 className='CreateGameTextField'
                 required
-                id='filled-required'
+                id='filled-required 2'
                 label='Password'
                 type='password'
                 placeholder='Enter your password'
@@ -101,13 +94,13 @@ export const RegisterForm = ( ) => {
               <TextField
                 className='CreateGameTextField'
                 required
-                id='filled-required'
+                id='filled-required 3'
                 label='Confirm Password'
                 type='password'
                 placeholder='Enter your password'
-                defaultValue={password}
+                defaultValue={cPassword}
                 variant='outlined'
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setCPassword(event.target.value)}
               />
 
               {/* <RadioGroup

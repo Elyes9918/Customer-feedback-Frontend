@@ -13,7 +13,7 @@ import { useLocation } from 'react-router-dom';
 import logo from './../../images/logo_0.png';
 import { useDispatch } from 'react-redux';
 import { useAppDispatch } from '../../app/hooks';
-import { logoutAction } from '../../reduxSlices/UserSlice';
+import { LogoutUserAction } from '../../features/authSlice';
 
  
 export const Toolbar = () => {
@@ -29,6 +29,8 @@ export const Toolbar = () => {
   const location = useLocation();
   const isJoinPage = location.pathname.includes('/login');
   const isHomePage = location.pathname.includes('/register');
+  const isResetPassword = location.pathname.includes('/resetPassword');
+  const isChangePassword = location.pathname.includes('/changePassword');
 
   return (
     <Slide direction='down' in={true} timeout={800}>
@@ -55,20 +57,20 @@ export const Toolbar = () => {
 
 
             <div>
-            {(isJoinPage || isHomePage) && //Means if its join or home page show the button
+            {(isJoinPage || isHomePage || isResetPassword || isChangePassword) && //Means if its join or home page show the button
             
             <Button title="New Session" startIcon={<AddCircleOutlineIcon/>} color='inherit' onClick={() => navigate('/')}>
                 {!isSmallScreen ? 'Sign in': null}
             </Button>
             }
             
-            {(isJoinPage || isHomePage) && 
+            {(isJoinPage || isHomePage || isResetPassword || isChangePassword) && 
             <Button startIcon={<MergeTypeOutlinedIcon/>} size={ isSmallScreen ? "small" : "large"}  color='inherit' onClick={() => navigate('/register')}>
               {!isSmallScreen ? 'Sign up' : null}
             </Button>
             }
 
-            {!isHomePage && !isJoinPage && <Button startIcon={<ExitToApp/>} size={ isSmallScreen ? "small" : "large"}  color='inherit' onClick={() => {navigate('/');dispatch(logoutAction())}}>
+            {!isHomePage && !isJoinPage && !isResetPassword && !isChangePassword && <Button startIcon={<ExitToApp/>} size={ isSmallScreen ? "small" : "large"}  color='inherit' onClick={() => {navigate('/');dispatch(LogoutUserAction())}}>
               Logout
             </Button>}
               
