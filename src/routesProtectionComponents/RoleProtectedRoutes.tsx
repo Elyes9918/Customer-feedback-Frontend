@@ -1,7 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
-import jwt_decode, { JwtPayload } from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import { IjwtPayload } from "../types/Jwt";
-import { useState } from "react";
 
 
 export const userRole = () =>{
@@ -18,20 +17,25 @@ export const userRole = () =>{
 }
 
 type ProtectedRouteRole = {
-	roleRequired : 'ADMIN' | 'MEMBER' | 'GESTIONNAIRE' | 'CLIENT';
+	rolesRequired : string;
 }
 
 const RoleProtectedRoutes = (props: ProtectedRouteRole) => {
     
     const userRoles = userRole();
+    var rolesRequiredArr = props.rolesRequired.split(",");
     
-    // const isAllowed = () => {
+    const isAllowed = () => {
 
-        
-    // }
+        for (var role of userRoles) {
+            for (var roleReq of rolesRequiredArr){
+                if(role==="ROLE_"+roleReq) return 1;
+            }
+        }
+        return 0;        
+    }
 
-
-    return userRoles.includes("ROLE_"+props.roleRequired) ? <Outlet/> : <Navigate to="/main"  replace/>;
+    return isAllowed() ? <Outlet/> : <Navigate to="/main"  replace/>;
 
 };
 

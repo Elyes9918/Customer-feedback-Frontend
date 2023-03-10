@@ -10,6 +10,7 @@ import { EmailForm } from './components/ResetPassword/EmailForm/EmailForm';
 import { DoublePasswordForm } from './components/ResetPassword/DoublePasswordForm/DoublePasswordForm';
 import AuthProtectedRoutes from './routesProtectionComponents/AuthProtectedRoutes';
 import UnProtectedRoutes from './routesProtectionComponents/UnProtectedRoutes';
+import Testing from './pages/Testing';
 import RoleProtectedRoutes from './routesProtectionComponents/RoleProtectedRoutes';
 
 
@@ -26,6 +27,9 @@ function App() {
             {/* Protected Routes */}
             <Route element ={<AuthProtectedRoutes/>}>
               <Route path='/main' element={<MainPage/>}/>
+                <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE'/>}>
+                  <Route path='/testing' element={<Testing/>}/>
+                </Route>
             </Route>
             {/* Unprotected Routes */}
             <Route element ={<UnProtectedRoutes/>}>
