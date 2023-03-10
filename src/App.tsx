@@ -8,8 +8,10 @@ import { Toolbar } from './components/Toolbar/Toolbar';
 import MainPage from './pages/MainPage/MainPage';
 import { EmailForm } from './components/ResetPassword/EmailForm/EmailForm';
 import { DoublePasswordForm } from './components/ResetPassword/DoublePasswordForm/DoublePasswordForm';
-import ProtectedRoutes from './app/routesProtectionComponents/ProtectedRoutes';
-import UnProtectedRoutes from './app/routesProtectionComponents/UnProtectedRoutes';
+import AuthProtectedRoutes from './routesProtectionComponents/AuthProtectedRoutes';
+import UnProtectedRoutes from './routesProtectionComponents/UnProtectedRoutes';
+import RoleProtectedRoutes from './routesProtectionComponents/RoleProtectedRoutes';
+
 
 function App() {
   return (
@@ -22,7 +24,7 @@ function App() {
           <Toolbar />
           <Routes>
             {/* Protected Routes */}
-            <Route element ={<ProtectedRoutes/>}>
+            <Route element ={<AuthProtectedRoutes/>}>
               <Route path='/main' element={<MainPage/>}/>
             </Route>
             {/* Unprotected Routes */}

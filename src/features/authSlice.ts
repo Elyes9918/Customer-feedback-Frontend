@@ -9,7 +9,7 @@ const jwtpayload : IjwtPayload = {} as any;
 
 const initialState = {
     authStatus : ApiStatus.ideal,
-    jwtpayload
+    jwtpayload : {}
 }
 
 
@@ -17,9 +17,12 @@ export const LoginUserAction = createAsyncThunk(
     "auth/loginUserAction",
     async (data:IUserForm)=> {
         const response = await LoginUserApi(data);
-        localStorage.setItem("userToken",JSON.stringify(response.data.token));
-        //const decoded = jwt_decode<IjwtPayload>(JSON.stringify(response.data.token));
-        //console.log(decoded["username"]);
+
+        const AccessToken = JSON.stringify(response.data.token);
+        localStorage.setItem("accessToken",AccessToken);
+
+
+        return response.data;
     }
 )
 
@@ -66,7 +69,7 @@ const authSlice = createSlice({
 
         builder.addCase(LoginUserAction.fulfilled,(state,action)=>{
             state.authStatus = ApiStatus.success;
-            // state.jwtpayload = jwt_decode<IjwtPayload>(JSON.stringify(action.payload));
+            state.jwtpayload = action.payload;
         });
 
         builder.addCase(LoginUserAction.rejected,(state)=>{

@@ -19,7 +19,7 @@ import { Label } from '@material-ui/icons';
 import { useAppDispatch } from '../../app/hooks';
 import {  getUserListAction } from '../../features/userSlice';
 import {  LoginUserAction } from '../../features/authSlice';
-import { useAuth } from '../../app/routesProtectionComponents/ProtectedRoutes';
+import { useAuth } from '../../routesProtectionComponents/AuthProtectedRoutes';
 import { store } from '../../app/store';
 
 
