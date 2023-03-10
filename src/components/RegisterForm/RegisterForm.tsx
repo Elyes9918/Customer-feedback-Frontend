@@ -4,7 +4,10 @@ import {
     CardActions,
     CardContent,
     CardHeader,
+    Checkbox,
     FormControlLabel,
+    FormGroup,
+    FormHelperText,
     Grow,
     Radio,
     RadioGroup,
@@ -18,29 +21,26 @@ import { IUserForm } from '../../types/User';
 import { Label } from '@material-ui/icons';
 import { useAppDispatch } from '../../app/hooks';
 import { LoginUserAction, RegisterUserAction } from '../../features/authSlice';
-
-// interface RegisterFormProps {
-//   mainPageEmail: string;
-// }
+import { useForm } from 'react-hook-form';
 
 
 export const RegisterForm = ( ) => {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [cPassword,setCPassword]= useState('');
     const dispatch = useAppDispatch();
+    const {register,handleSubmit,formState:{errors}} = useForm();
+
 
     useEffect(()=>{
       },[])
 
-  
-    const handleSubmit = async (event: FormEvent) => {
-      event.preventDefault();
+
+      const onSubmit = (data: any) => {
       const user: IUserForm = {
-        email: email,
-        password: password,
+        email: data?.email,
+        password: data?.password,
       };
 
       if(password === cPassword){
@@ -59,7 +59,7 @@ export const RegisterForm = ( ) => {
     return (
       <Grow in={true} timeout={1000}>
   
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Card variant='outlined' className='CreateGameCard'>
             
             <CardHeader
@@ -71,37 +71,55 @@ export const RegisterForm = ( ) => {
             <CardContent className='CreateGameCardContent'>
               <TextField
                 className='CreateGameTextField'
-                required
                 id='filled-required 1'
                 label='Email'
                 placeholder='Enter your email'
-                defaultValue={email}
+                defaultValue={''}
                 variant='outlined'
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+                {...register("email", { required: "E-mail Address is required." })}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message?.toString()}
               />
               <TextField
-                className='CreateGameTextField'
-                required
+                className='CreateGameTextField'               
                 id='filled-required 2'
                 label='Password'
                 type='password'
                 placeholder='Enter your password'
                 defaultValue={password}
                 variant='outlined'
+                {...register("password", { required: "Password is required." })}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message?.toString()}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
               />
 
               <TextField
                 className='CreateGameTextField'
-                required
                 id='filled-required 3'
                 label='Confirm Password'
                 type='password'
                 placeholder='Enter your password'
                 defaultValue={cPassword}
                 variant='outlined'
+                {...register("Cpassword", { required: "Confirm Password is required." })}
+                error={Boolean(errors.Cpassword)}
+                helperText={errors.Cpassword?.message?.toString()}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => setCPassword(event.target.value)}
               />
+
+               <FormGroup 
+                 style={{ display: "block", marginTop: "0px" ,marginRight:"100px" }}>
+                      <FormControlLabel 
+                        control={
+                          <Checkbox {...register("tnc", { required: "Please aggre to our terms and condtions" })} />
+                        } 
+                        label="I aggree to all the terms and conditions" 
+                      />
+                </FormGroup> 
+              
+                <FormHelperText style={{color:'#d32f2f'}}>{errors.tnc?.message?.toString()}</FormHelperText>
+
 
               {/* <RadioGroup
                 aria-label='gender'

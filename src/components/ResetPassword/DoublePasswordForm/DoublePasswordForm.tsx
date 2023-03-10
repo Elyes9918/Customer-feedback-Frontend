@@ -18,6 +18,7 @@ import { IUserForm } from '../../../types/User';
 import { Label } from '@material-ui/icons';
 import { useAppDispatch } from '../../../app/hooks';
 import { ChangeUserPasswordAction } from '../../../features/authSlice';
+import { useForm } from 'react-hook-form';
 
 // interface RegisterFormProps {
 //   mainPageEmail: string;
@@ -33,6 +34,8 @@ export const DoublePasswordForm = ( ) => {
     const [password, setPassword] = useState('');
     const [cPassword,setCPassword]= useState('');
     const dispatch = useAppDispatch();
+    const {register,handleSubmit,formState:{errors}} = useForm();
+
 
 
 
@@ -40,26 +43,25 @@ export const DoublePasswordForm = ( ) => {
       },[])
 
   
-    const handleSubmit = async (event: FormEvent) => {
-      event.preventDefault();
+      const onSubmit = (data: any) => {
       const user: IUserForm = {
-        password: password,
+        password: data?.password,
         token: resetToken
       };
       
       // Post request 
-      dispatch(ChangeUserPasswordAction(user)).then(()=>{
+      if(password === cPassword){
+        dispatch(ChangeUserPasswordAction(user)).then(()=>{
           navigate('/login')
-      })
-
-      
- 
+        })
+      }
+       
     };
 
     return (
         <Grow in={true} timeout={1000}>
     
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Card variant='outlined' className='CreateGameCard'>
               
               <CardHeader
@@ -72,25 +74,29 @@ export const DoublePasswordForm = ( ) => {
                
                 <TextField
                   className='CreateGameTextField'
-                  required
                   id='filled-required 2'
                   label='Password'
                   type='password'
                   placeholder='Enter your password'
-                  defaultValue={password}
+                  defaultValue={''}
                   variant='outlined'
+                  {...register("password", { required: "Password is required." })}
+                  error={Boolean(errors.password)}
+                  helperText={errors.password?.message?.toString()}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
                 />
   
                 <TextField
                   className='CreateGameTextField'
-                  required
                   id='filled-required 3'
                   label='Confirm Password'
                   type='password'
                   placeholder='Enter your password'
-                  defaultValue={cPassword}
+                  defaultValue={''}
                   variant='outlined'
+                  {...register("Cpassword", { required: "Confirm Password is required." })}
+                  error={Boolean(errors.Cpassword)}
+                  helperText={errors.Cpassword?.message?.toString()}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => setCPassword(event.target.value)}
                 />
   

@@ -6,7 +6,6 @@ import { IUser } from "../types/User";
 
 const list : IUser[] = [];
 
-
 const initialState = {
     list,
     listStatus: ApiStatus.ideal,

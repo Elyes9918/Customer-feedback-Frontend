@@ -1,7 +1,4 @@
 import { Navigate, Outlet } from "react-router-dom";
-import jwt_decode, { JwtPayload } from "jwt-decode";
-import { IjwtPayload } from "../types/Jwt";
-import { useState } from "react";
 
 
 const useAuth = () =>{

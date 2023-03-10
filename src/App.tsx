@@ -3,11 +3,8 @@ import { CssBaseline, StylesProvider, ThemeProvider } from '@material-ui/core';
 import { BrowserRouter as Router, Route ,Routes,Navigate} from 'react-router-dom';
 import { theme } from './services/theme';
 import HomePage from './pages/HomePage/HomePage';
-import NotFound from './pages/NotFound/NotFound';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import MainPage from './pages/MainPage/MainPage';
-import { EmailForm } from './components/ResetPassword/EmailForm/EmailForm';
-import { DoublePasswordForm } from './components/ResetPassword/DoublePasswordForm/DoublePasswordForm';
 import AuthProtectedRoutes from './routesProtectionComponents/AuthProtectedRoutes';
 import UnProtectedRoutes from './routesProtectionComponents/UnProtectedRoutes';
 import Testing from './pages/Testing';
@@ -24,13 +21,20 @@ function App() {
         <Router>
           <Toolbar />
           <Routes>
-            {/* Protected Routes */}
+
+
+            {/* Authentication Protected Routes */}
             <Route element ={<AuthProtectedRoutes/>}>
               <Route path='/main' element={<MainPage/>}/>
+
+                {/* Role Protected Routes */}
                 <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE'/>}>
                   <Route path='/testing' element={<Testing/>}/>
                 </Route>
+
             </Route>
+
+
             {/* Unprotected Routes */}
             <Route element ={<UnProtectedRoutes/>}>
               <Route path="/resetPassword/changePassword/:resetToken" element={<HomePage/>}/> 
@@ -39,6 +43,8 @@ function App() {
               <Route path="/resetPassword" element={<HomePage/>}/> 
               <Route path="/*" element={<Navigate to="/login" replace/>} /> 
             </Route>
+
+
           </Routes>
         </Router>
       </StylesProvider>

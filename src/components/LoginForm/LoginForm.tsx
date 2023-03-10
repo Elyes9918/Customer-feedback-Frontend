@@ -15,52 +15,50 @@ import {
   import { useNavigate } from 'react-router-dom';
   import './LoginForm.css';
 import { IUserForm } from '../../types/User';
-import { Label } from '@material-ui/icons';
-import { useAppDispatch } from '../../app/hooks';
-import {  getUserListAction } from '../../features/userSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {  LoginUserAction } from '../../features/authSlice';
-import { useAuth } from '../../routesProtectionComponents/AuthProtectedRoutes';
-import { store } from '../../app/store';
-
+import { RootState, store } from '../../app/store';
+import { useForm } from 'react-hook-form';
 
 
 
   
   export const LoginForm = () => {
+
     const navigate = useNavigate();
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const dispatch = useAppDispatch();
+    const {register,handleSubmit,formState:{errors}} = useForm();
+    const {authStatus} = useAppSelector((state:RootState)=>state.auth)
 
 
-      useEffect(()=>{
-       },[])
+    useEffect(() => {
+      
+    }, [])
 
 
-      const handleClickRememberPassword = () =>{
-      navigate(`/resetPassword`);
-      }
-   
-  
-    const handleSubmit = async (event: FormEvent) => {
-      event.preventDefault();
+    const onSubmit = (data: any) => {
       const user: IUserForm = {
-        email: email,
-        password: password,
+        email: data?.email,
+        password: data?.password
       };
 
-      dispatch(LoginUserAction(user)).then(()=>{
-        navigate(`/main`);
-        window.location.reload();
+      dispatch(LoginUserAction(user)).then(() => {
+          navigate(`/main`);
+          window.location.reload();
+      }).catch(() => {
+          console.log("Error");
       })
-       
-    };
+    }
+    
+    const handleClickRememberPassword = () => {
+      navigate(`/resetPassword`);
+    }
+
   
     return (
       <Grow in={true} timeout={1000}>
   
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Card variant='outlined' className='CreateGameCard'>
             
             <CardHeader
@@ -70,65 +68,47 @@ import { store } from '../../app/store';
             />
   
             <CardContent className='CreateGameCardContent'>
-              <TextField
+              <TextField    
                 className='CreateGameTextField'
-                required
-                id='filled-required'
+                id='filled-required'  
                 label='Email'
                 placeholder='Enter your email'
-                defaultValue={email}
+                defaultValue={''}
                 variant='outlined'
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+                {...register("email", { required: "E-mail Address is required." })}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message?.toString()}
               />
+
               <TextField
                 className='CreateGameTextField'
-                required
                 id='filled-required'
                 label='Password'
                 type='password'
                 placeholder='Enter your password'
-                defaultValue={password}
+                defaultValue={''}
                 variant='outlined'
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
-              />
+                {...register("password", { required: "Password is required." })}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message?.toString()}/>
 
-            <Typography className='ForogtPassword' component="span" onClick={handleClickRememberPassword}>Remember password ?</Typography>
 
-              {/* <RadioGroup
-                aria-label='gender'
-                name='gender1'
-                value={gameType}
-                onChange={(
-                  event: ChangeEvent<{
-                    name?: string | undefined;
-                    value: any;
-                  }>
-                ) => setGameType(event.target.value)}
-              >
-                <FormControlLabel
-                  value={GameType.Fibonacci}
-                  control={<Radio color='primary' size='small' />}
-                  label='Fibonacci (0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89)'
-                />
-                <FormControlLabel
-                  value={GameType.ShortFibonacci}
-                  control={<Radio color='primary' size='small' />}
-                  label='Short Fibonacci (0, ½, 1, 2, 3, 5, 8, 13, 20, 40, 100)'
-                />
-                <FormControlLabel
-                  value={GameType.TShirt}
-                  control={<Radio color='primary' size='small' />}
-                  label='T-Shirt (XXS, XS, S, M, L, XL, XXL)'
-                />
-              </RadioGroup> */}
+            <Typography className='ForogtPassword' component="span" onClick={handleClickRememberPassword}>
+              Remember password ?
+            </Typography>
+
             </CardContent>
+
             <CardActions className='CreateGameCardAction'>
               <Button type='submit' variant='contained' color='primary' className='CreateGameButton'>
                 Login
               </Button>
             </CardActions>
+
           </Card>
         </form>
+
+
       </Grow>
     );
   };

@@ -14,29 +14,30 @@ import { Label } from '@material-ui/icons';
 import { useAppDispatch } from '../../../app/hooks';
 import { IUserForm } from '../../../types/User';
 import { resetUserPasswordAction } from '../../../features/authSlice';
+import { useForm } from 'react-hook-form';
+
 
 export const EmailForm = ( ) => {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
     const [isEmailSent,setIsEmailSent] = useState(false);
     const [message,setMessage] =useState('')
     const dispatch = useAppDispatch();
+    const {register,handleSubmit,formState:{errors}} = useForm();
+
 
 
     useEffect(()=>{
       },[])
 
   
-    const handleSubmit = async (event: FormEvent) => {
-      event.preventDefault();
+      const onSubmit = (data: any) => {
       const user: IUserForm = {
-        email: email,
+        email: data?.email,
       };
       
         dispatch(resetUserPasswordAction(user)).then(()=>{
           setIsEmailSent(true);
-          //set Message here and show it in the UI
           setMessage("An Email has been sent, Please check your mail box")
         })
 
@@ -46,7 +47,7 @@ export const EmailForm = ( ) => {
     return (
       <Grow in={true} timeout={1000}>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
         <Card variant='outlined' className='CreateGameCard'>
           
           <CardHeader className='CreateGameCardHeader' title='Enter your email'
@@ -56,13 +57,14 @@ export const EmailForm = ( ) => {
 
             <TextField
               className='CreateGameTextField'
-              required
               id='filled-required 1'
               label='Email'
               placeholder='Enter your email'
-              defaultValue={email}
+              defaultValue={''}
               variant='outlined'
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+              {...register("email", { required: "E-mail Address is required." })}
+              error={Boolean(errors.email)}
+              helperText={errors.email?.message?.toString()}
             />
 
             {isEmailSent && 

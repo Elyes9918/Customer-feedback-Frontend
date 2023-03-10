@@ -9,7 +9,7 @@ const jwtpayload : IjwtPayload = {} as any;
 
 const initialState = {
     authStatus : ApiStatus.ideal,
-    jwtpayload : {}
+    jwtpayload
 }
 
 
@@ -20,9 +20,8 @@ export const LoginUserAction = createAsyncThunk(
 
         const AccessToken = JSON.stringify(response.data.token);
         localStorage.setItem("accessToken",AccessToken);
-
-
         return response.data;
+
     }
 )
 
