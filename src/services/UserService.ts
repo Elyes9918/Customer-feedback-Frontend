@@ -22,6 +22,31 @@ export const getUserListApi = async () => {
 
 export const updateUserApi = async (id: number, data: IUser) => {
     const url = `${apiUsersURL}/${id}`;
-    return await axios.patch(url, data);
+    return await authAxios.patch(url, data);
 };
+
+export const getUserByIdApi = async(id:number) => {
+    const url = `${apiUsersURL}/user/${id}`;
+    return await authAxios.get<IUser>(url)
+}
+
+export const getUserByEmailApi = async(emailParam:string) => {
+    const url = `${apiUsersURL}/user`;
+    return await authAxios.get<IUser>(url,{ params: { email: emailParam } });
+}
+
+export const unAssignRoleApi = async(id:number,data:IUser) =>{
+    const url = `${apiUsersURL}/${id}/role`;
+    return await authAxios.patch(url, data);
+}
+
+export const unAssignProjectApi = async(id:number,data:IUser) =>{
+    const url = `${apiUsersURL}/${id}/project`;
+    return await authAxios.patch(url, data);
+}
+
+export const unAssignFeedbackApi = async(id:number,data:IUser) =>{
+    const url = `${apiUsersURL}/${id}/feedback`;
+    return await authAxios.patch(url, data);
+}
 

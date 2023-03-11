@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUserListAction } from "../../features/userSlice";
-import jwt_decode, { JwtPayload } from "jwt-decode";
-import { store, useAppDispatch, useAppSelector } from "../../app/store";
+import jwt_decode from "jwt-decode";
+import {  useAppDispatch, useAppSelector } from "../../app/store";
 import { IjwtPayload } from "../../types/Jwt";
 import WithPermessionUnique from "../../routesProtectionComponents/WithPermessionUnique";
 import WithPermessionTree from "../../routesProtectionComponents/WithPermessionTree";
-
 
 
 const MainPage = () => {
@@ -15,7 +14,7 @@ const MainPage = () => {
     const getToken = () => JSON.parse(localStorage.getItem('accessToken') || '{}');
     const decodedJwt = jwt_decode<IjwtPayload>(getToken() || '') || null;
 
-    const {authStatus,jwtpayload} = useAppSelector((state)=>state.auth)
+    const {authStatus} = useAppSelector((state)=>state.auth)
 
 
 
