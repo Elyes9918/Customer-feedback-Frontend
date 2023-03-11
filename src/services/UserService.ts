@@ -1,7 +1,7 @@
 import { IUser, IUserForm } from "../types/User";
 import axios from "axios";
 
-export const getToken = () => JSON.parse(localStorage.getItem('userToken') || '{}');
+export const getToken = () => JSON.parse(localStorage.getItem('accessToken') || '{}');
 
 const getAuthorizationHeader = `Bearer ${getToken()}`;
 

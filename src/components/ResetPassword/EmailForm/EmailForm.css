@@ -38,3 +38,9 @@
       -webkit-transition: opacity 0.5s ease-in-out;
   }
   
+  .errorMessage{
+    color: rgb(212, 0, 0);
+    font-size: medium;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }

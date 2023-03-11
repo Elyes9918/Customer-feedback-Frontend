@@ -11,10 +11,11 @@ import {
   import { useNavigate } from 'react-router-dom';
   import './EmailForm.css';
 import { Label } from '@material-ui/icons';
-import { useAppDispatch } from '../../../app/hooks';
 import { IUserForm } from '../../../types/User';
 import { resetUserPasswordAction } from '../../../features/authSlice';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/store';
+import validateEmail from '../../../utility/EmailValidation';
 
 
 export const EmailForm = ( ) => {
@@ -36,11 +37,16 @@ export const EmailForm = ( ) => {
         email: data?.email,
       };
       
+      if(validateEmail(data?.email)){
         dispatch(resetUserPasswordAction(user)).then(()=>{
           setIsEmailSent(true);
           setMessage("An Email has been sent, Please check your mail box")
         })
-
+      }else{
+        setIsEmailSent(true);
+        setMessage("Invalid Email, Please try again.")
+      }
+        
  
     };
   
@@ -68,9 +74,9 @@ export const EmailForm = ( ) => {
             />
 
             {isEmailSent && 
-              <div>
-                {message}
-              </div>
+               <div className='errorMessage'>
+               {message}
+             </div>
             }
 
           </CardContent>

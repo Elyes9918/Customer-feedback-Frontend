@@ -19,16 +19,20 @@ import {
   import './RegisterForm.css';
 import { IUserForm } from '../../types/User';
 import { Label } from '@material-ui/icons';
-import { useAppDispatch } from '../../app/hooks';
+import {  useAppDispatch } from '../../app/store';
 import { LoginUserAction, RegisterUserAction } from '../../features/authSlice';
 import { useForm } from 'react-hook-form';
+import validateEmail from '../../utility/EmailValidation';
 
 
 export const RegisterForm = ( ) => {
-    const navigate = useNavigate();
-
+    
     const [password, setPassword] = useState('');
     const [cPassword,setCPassword]= useState('');
+    const [isRegisterSuccessful,setIsRegisterSuccesful] = useState(true);
+    const [message,setMessage] = useState('');
+
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const {register,handleSubmit,formState:{errors}} = useForm();
 
@@ -37,22 +41,25 @@ export const RegisterForm = ( ) => {
       },[])
 
 
-      const onSubmit = (data: any) => {
+      const onSubmit =  (data: any) => {
       const user: IUserForm = {
         email: data?.email,
         password: data?.password,
       };
 
-      if(password === cPassword){
-        
+      if(!validateEmail(data?.email)){
+        setMessage("Invalid Email, Please try again.")
+        setIsRegisterSuccesful(false);
+      }else if(password !== cPassword){
+        setMessage("Passwords do not match, Please try again.")
+        setIsRegisterSuccesful(false);
+      }else{
         dispatch(RegisterUserAction(user)).then(()=>{
           navigate(`/login`);
-          //if action is succesfull
-        }).catch(()=>{
-          //if action failed
-        })
-        
+        });
       }
+
+     
  
     };
   
@@ -120,34 +127,13 @@ export const RegisterForm = ( ) => {
               
                 <FormHelperText style={{color:'#d32f2f'}}>{errors.tnc?.message?.toString()}</FormHelperText>
 
+                
+                {!isRegisterSuccessful && 
+                  <div className='errorMessage'>
+                    {message}
+                  </div>
+                }
 
-              {/* <RadioGroup
-                aria-label='gender'
-                name='gender1'
-                value={gameType}
-                onChange={(
-                  event: ChangeEvent<{
-                    name?: string | undefined;
-                    value: any;
-                  }>
-                ) => setGameType(event.target.value)}
-              >
-                <FormControlLabel
-                  value={GameType.Fibonacci}
-                  control={<Radio color='primary' size='small' />}
-                  label='Fibonacci (0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89)'
-                />
-                <FormControlLabel
-                  value={GameType.ShortFibonacci}
-                  control={<Radio color='primary' size='small' />}
-                  label='Short Fibonacci (0, ½, 1, 2, 3, 5, 8, 13, 20, 40, 100)'
-                />
-                <FormControlLabel
-                  value={GameType.TShirt}
-                  control={<Radio color='primary' size='small' />}
-                  label='T-Shirt (XXS, XS, S, M, L, XL, XXL)'
-                />
-              </RadioGroup> */}
             </CardContent>
             <CardActions className='CreateGameCardAction'>
               <Button type='submit' variant='contained' color='primary' className='CreateGameButton'>

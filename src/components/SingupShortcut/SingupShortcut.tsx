@@ -27,9 +27,6 @@ export const SingupShortcut = () => {
       email: email,
     };
 
-
-
-    
    // const newGameId = await addNewGame(game);
     navigate(`/register`);
   };
@@ -52,17 +49,6 @@ export const SingupShortcut = () => {
 
               <form onSubmit={handleSubmit}>
                
-              {/* <TextField
-                className='CreateGameTextField'
-                required
-                id='filled-required'
-                label='Enter your email'
-                placeholder='Enter your email'
-                defaultValue={email}
-                variant='outlined'
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
-              /> */}
-
               <Button type='submit' variant='contained' color='primary' className='CreateGameButton'>
                 Sign Up here
               </Button>

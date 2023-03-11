@@ -16,9 +16,9 @@ import {
   import './DoublePasswordForm.css';
 import { IUserForm } from '../../../types/User';
 import { Label } from '@material-ui/icons';
-import { useAppDispatch } from '../../../app/hooks';
 import { ChangeUserPasswordAction } from '../../../features/authSlice';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/store';
 
 // interface RegisterFormProps {
 //   mainPageEmail: string;
@@ -33,6 +33,7 @@ export const DoublePasswordForm = ( ) => {
 
     const [password, setPassword] = useState('');
     const [cPassword,setCPassword]= useState('');
+    const [message,setMessage]=useState('');
     const dispatch = useAppDispatch();
     const {register,handleSubmit,formState:{errors}} = useForm();
 
@@ -54,6 +55,8 @@ export const DoublePasswordForm = ( ) => {
         dispatch(ChangeUserPasswordAction(user)).then(()=>{
           navigate('/login')
         })
+      }else{
+        setMessage('Passwords do not match, Please try again')
       }
        
     };
@@ -99,6 +102,11 @@ export const DoublePasswordForm = ( ) => {
                   helperText={errors.Cpassword?.message?.toString()}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => setCPassword(event.target.value)}
                 />
+
+                  
+                    <div className='errorMessage'>
+                      {message}
+                    </div>
   
               </CardContent>
               <CardActions className='CreateGameCardAction'>

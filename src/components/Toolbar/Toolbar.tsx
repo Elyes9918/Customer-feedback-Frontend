@@ -12,8 +12,8 @@ import './Toolbar.css';
 import { useLocation } from 'react-router-dom';
 import logo from './../../images/logo_0.png';
 import { useDispatch } from 'react-redux';
-import { useAppDispatch } from '../../app/hooks';
 import { LogoutUserAction } from '../../features/authSlice';
+import { useAppDispatch } from '../../app/store';
 
  
 export const Toolbar = () => {

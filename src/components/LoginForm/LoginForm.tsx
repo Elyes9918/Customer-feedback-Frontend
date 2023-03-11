@@ -15,39 +15,55 @@ import {
   import { useNavigate } from 'react-router-dom';
   import './LoginForm.css';
 import { IUserForm } from '../../types/User';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {  LoginUserAction } from '../../features/authSlice';
-import { RootState, store } from '../../app/store';
+import { RootState, useAppDispatch, useAppSelector, useAppThunkDispatch } from '../../app/store';
 import { useForm } from 'react-hook-form';
+import { ApiStatus } from '../../types/ApiStatus';
+import validateEmail from '../../utility/EmailValidation';
 
 
 
   
   export const LoginForm = () => {
 
+    const [isLoginSuccessful,setIsLoginSuccesful] = useState(true);
+    const [message,setMessage] = useState('');
+
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+    const dispatch = useAppThunkDispatch();
     const {register,handleSubmit,formState:{errors}} = useForm();
-    const {authStatus} = useAppSelector((state:RootState)=>state.auth)
 
+   
 
+    
+    
     useEffect(() => {
       
     }, [])
 
 
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
+
       const user: IUserForm = {
         email: data?.email,
         password: data?.password
       };
 
-      dispatch(LoginUserAction(user)).then(() => {
-          navigate(`/main`);
-          window.location.reload();
-      }).catch(() => {
-          console.log("Error");
-      })
+      setMessage("Invalid Credentials, Please try again.")
+      if(validateEmail(data?.email)){
+        try{
+          await dispatch(LoginUserAction(user)).unwrap().then(()=>{
+            navigate(`/main`);
+          });
+    
+          }catch(error){
+            setIsLoginSuccesful(false);
+          }
+      }else{
+        setMessage("Invalid Email, Please try again.")
+        setIsLoginSuccesful(false);
+      }
+
     }
     
     const handleClickRememberPassword = () => {
@@ -91,6 +107,12 @@ import { useForm } from 'react-hook-form';
                 {...register("password", { required: "Password is required." })}
                 error={Boolean(errors.password)}
                 helperText={errors.password?.message?.toString()}/>
+
+                {!isLoginSuccessful && 
+                  <div className='errorMessage'>
+                    {message}
+                  </div>
+                }
 
 
             <Typography className='ForogtPassword' component="span" onClick={handleClickRememberPassword}>
